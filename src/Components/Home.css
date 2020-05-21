@@ -5,3 +5,11 @@
 #status{
     width: 70px;
 }
+
+.btn-primary{
+    background-color: #0A3D62;
+}
+
+td {
+    width:20%;
+}

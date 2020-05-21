@@ -35,7 +35,7 @@ class Home extends React.Component {
     }
 
     onChange = date => {
-        
+
         this.setState({ date },
             () => {
                 console.log("myDate", this.state)
@@ -92,36 +92,35 @@ class Home extends React.Component {
                         <Calendar onChange={this.onChange} value={this.state.date} />
                     </div>
                     <div className="col-9">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Time-Slot</th>
+                                        <th scope="col">Task</th>
+                                        <th scope="col">Link</th>
+                                        <th scope="col">Memebers</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.timeSlot.map((ele, index) => {
+                                            return (
+                                                <tr>
+                                                    <td>
+                                                        <button type="button" style={{width: "150px"}} value={index} onClick={() => { this.taskTime(index) }} class="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalCenter"><b>{ele}</b></button>
+                                                    </td>
+                                                </tr>
+                                            )
 
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
+                                        })
+                                    }
+                                    
 
-                                    <th className="myclass">#</th>
-                                    <th>Task</th>
-                                    <th>Link</th>
-                                    <th>Members</th>
-                                    <th id="status">Status</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    this.state.timeSlot.map((ele, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td className="myclass"><button type="button" value={index} onClick={() => { this.taskTime(index) }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">{ele}</button></td>
-                                            </tr>
-                                        )
-
-                                    })
-                                }
-
-
-                            </tbody>
-                        </table>
-
-
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -170,4 +169,5 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => { return bindActionCreators({ fetchData }, dispatch) }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home) 
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+
