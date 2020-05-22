@@ -1,19 +1,7 @@
-//import { createStore } from "redux"
-
 
 let initialState = {
-    data: undefined
+    data: []
 }
-
-
-
-// function setCities(data) {
-//     //let changeState = JSON.parse(JSON.stringify(state));
-//         initialState.cities.push(data)
-// }
-
-
-
 
 
 

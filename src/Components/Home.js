@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import axios from 'axios'
 import { fetchData } from '../ActionCreators/action'
-import Calendar from 'react-calendar';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import './Home.css'
-import 'react-calendar/dist/Calendar.css'
+
 
 class Home extends React.Component {
     componentDidMount() {
         this.props.fetchData(this.state.date)
     }
-
+    
     state = {
         timeSlot: [
             '9AM - 10AM',
@@ -24,7 +25,7 @@ class Home extends React.Component {
             '4PM - 5PM'
         ],
         data: [
-            0, 1, 2, 3, 4, 5, 6, 7
+            0, 0, 0, 0, 0, 0, 0, 0
         ],
         date: new Date(),
 
@@ -35,10 +36,10 @@ class Home extends React.Component {
     }
 
     onChange = date => {
+        console.log("new date" , date)
 
         this.setState({ date },
             () => {
-                console.log("myDate", this.state)
                 this.props.fetchData(date)
             })
 
@@ -89,39 +90,42 @@ class Home extends React.Component {
                 <p className="text-center"><h4>My Task</h4></p>
                 <div className="row">
                     <div className="col-3">
-                        <Calendar onChange={this.onChange} value={this.state.date} />
+                    <DatePicker selected={this.state.startDate} onChange={this.handleChange} />
                     </div>
                     <div className="col-9">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time-Slot</th>
-                                        <th scope="col">Task</th>
-                                        <th scope="col">Link</th>
-                                        <th scope="col">Memebers</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.state.timeSlot.map((ele, index) => {
-                                            return (
-                                                <tr>
-                                                    <td>
-                                                        <button type="button" style={{width: "150px"}} value={index} onClick={() => { this.taskTime(index) }} class="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalCenter"><b>{ele}</b></button>
-                                                    </td>
-                                                </tr>
-                                            )
-
-                                        })
-                                    }
-                                    
-
-                                </tbody>
-                            </table>
-                        </div>
+                        <table className="table table-bordered">
+                            <thead>
+                                <th>Task-Slot</th>
+                                <th>Task</th>
+                                <th>Link</th>
+                                <th>Member</th>
+                            </thead>
+                        
+                        <tbody>
+                            {
+                                this.state.timeSlot.map((ele,index) => {
+                                    return(
+                                        <tr>
+                                            <td><button type="button" style={{width: "150px"}} value={index} onClick={() => { this.taskTime(index)}} className="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalCenter"><b>{ele}</b></button></td>
+                                            {
+                                                this.props.data.map((item,el) =>{
+                                                    return(
+                                                            <React.Fragment>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </React.Fragment>
+                                                        )
+                                                })
+                                            }
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                        </table>
                     </div>
+                    
                 </div>
 
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
