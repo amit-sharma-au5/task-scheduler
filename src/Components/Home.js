@@ -3,8 +3,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import axios from 'axios'
 import { fetchData } from '../ActionCreators/action'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import $ from "jquery";
+
 import './Home.css'
 
 
@@ -12,7 +14,7 @@ class Home extends React.Component {
     componentDidMount() {
         this.props.fetchData(this.state.date)
     }
-    
+    count =0;
     state = {
         timeSlot: [
             '9AM - 10AM',
@@ -32,12 +34,15 @@ class Home extends React.Component {
         taskTime: "0",
         task: "",
         link: "",
-        member: ""
+        member: "",
+        rTask:"",
+        rLink:"",
+        rMember:""
     }
 
     onChange = date => {
-        console.log("new date" , date)
-
+        console.log("new date", date)
+        
         this.setState({ date },
             () => {
                 this.props.fetchData(date)
@@ -90,7 +95,7 @@ class Home extends React.Component {
                 <p className="text-center"><h4>My Task</h4></p>
                 <div className="row">
                     <div className="col-3">
-                    <DatePicker selected={this.state.startDate} onChange={this.handleChange} />
+                        <Calendar onChange={this.onChange} value={this.state.date} locale />
                     </div>
                     <div className="col-9">
                         <table className="table table-bordered">
@@ -100,32 +105,47 @@ class Home extends React.Component {
                                 <th>Link</th>
                                 <th>Member</th>
                             </thead>
-                        
-                        <tbody>
                             {
-                                this.state.timeSlot.map((ele,index) => {
-                                    return(
-                                        <tr>
-                                            <td><button type="button" style={{width: "150px"}} value={index} onClick={() => { this.taskTime(index)}} className="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalCenter"><b>{ele}</b></button></td>
-                                            {
-                                                this.props.data.map((item,el) =>{
-                                                    return(
-                                                            <React.Fragment>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </React.Fragment>
-                                                        )
-                                                })
-                                            }
-                                        </tr>
-                                    )
-                                })
+                                (()=>{
+                                    $('b').empty()
+                                    $('td').css("background-color","white")
+                                })()
+                                
                             }
-                        </tbody>
+
+                            <tbody>
+                                {
+                                    this.state.timeSlot.map((ele, index) => {
+                                        return (
+                                            <tr>
+                                                <td><button type="button" style={{ width: "150px" }} value={index} onClick={() => { this.taskTime(index) }} className="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalCenter"><h6>{ele}</h6></button></td>
+                                                <td><b id={index+"0"}></b></td>
+                                                <td><b id={index+"1"}></b></td>
+                                                <td><b id={index+"2"}></b></td>
+                                                
+                                                {
+                                                    this.props.data.map((ele) => {
+                                                     if (ele.taskTime === index) {
+                                                            
+                                                            $('#'+index+'0').append(ele.task).parent().css({"background-color": "#F0DF87","color":"#AE1438"})
+                                                            $('#'+index+'1').append(ele.link).parent().css({"background-color": "#FBD28B","color":"#AE1438"})
+                                                            $('#'+index+'2').append(ele.member).parent().css({"background-color": "#F0DF87","color":"#AE1438"})
+ 
+                                                           return false
+                                                        }
+                                                        else{ return(
+                                                                false
+                                                        )}
+                                                    })
+                                                }
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
 
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
